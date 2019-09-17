@@ -18,42 +18,41 @@ import java.util.logging.Logger;
  * @author ferna
  */
 public class Cliente extends JFrame implements ActionListener{
-    public static JFrame Ventana=new JFrame();
-    public static JFrame VentanaA=new JFrame();
-    public static JFrame VentanaU=new JFrame();
-    public static JFrame VentanaAdmU=new JFrame();
-    public static JFrame VentanaAltaU=new JFrame();
+    JFrame Ventana = new JFrame();
+    JFrame VentanaA = new JFrame();
+    JFrame VentanaU = new JFrame();
+    JFrame VentanaAdmU = new JFrame();
+    JFrame VentanaAltaU = new JFrame();
     /////////////////Componentes de Ventana///////////////
     //Labels
-        public static JLabel User;
-        public static JLabel Password;
+        JLabel User;
+        JLabel Password;
         //Textfield
-        public static JTextField U;
-        public static JPasswordField P;
+        JTextField U;
+        JPasswordField P;
         //Buttons
-        public static JButton Aceptar;   
-        
+        JButton Aceptar;   
     ////////////////Componentes VentanaA//////////////////
-        public static JButton IngrU;
-        public static JButton IngrObjetos;
-        public static JButton SalirA;
+        JButton IngrU;
+        JButton IngrObjetos;
+        JButton SalirA;
     //////VentanaAdmU//////////////7
-        public static JButton RegresarAU;
-        public static JButton SalirAU;
-        public static JButton AltaU;
-        public static JButton BajaUsuario;
-        public static JButton CambioU;
-        public static JButton ConsultaU;
-        
-        public static JLabel MostrarU;
+        JButton RegresarAU;
+        JButton SalirAU;
+        JButton AltaU;
+        JButton AceptarU;
+        JButton BajaUsuario;
+        JButton btnCambioU;
+        JButton btnConsultaU;
+        JLabel MostrarU;
     /////////VentanaAltaU////
-        public static JLabel text;
-        public static JTextField nombre;
-        public static JTextField nombreA;
-        public static JTextField passW;
-        public static JTextField tipoU;
-        public static JButton AceptarU;
-        public static JButton RegresarU;
+        JLabel text;
+        JTextField nombre;
+        JTextField nombreA;
+        JTextField passW;
+        JTextField tipoU;
+        JButton btnUpdateUser;
+        JButton RegresarU;
     ////////////////////////////////////////////////////
         /**
          * Ventana de Administración de Objetos
@@ -67,6 +66,7 @@ public class Cliente extends JFrame implements ActionListener{
         JButton btnLuminaria;
         JButton btnTermostato;
         
+        Usuario editaUsuario;
         
         ObjectOutputStream out;
         ObjectInputStream in;
@@ -97,9 +97,9 @@ public class Cliente extends JFrame implements ActionListener{
             //Creamos el socket y nos conectamos
             Socket cl = new Socket("127.0.0.1", 9000);
             out = new ObjectOutputStream(cl.getOutputStream());
-            in=new ObjectInputStream(cl.getInputStream());
+            in = new ObjectInputStream(cl.getInputStream());
             //Crear usuario
-            Usuario u=new Usuario();
+            Usuario u = new Usuario();
             u.setAlias(U.getText());
             u.setPassword(P.getText());
             System.out.println("Usuario:"+U.getText()+" Password:"+P.getText());
@@ -218,42 +218,13 @@ public class Cliente extends JFrame implements ActionListener{
         VentanaA.setLocationRelativeTo(null);//permitir que la venana se despliegue en el centro de la pantalla
         VentanaA.setVisible(true);//Hacer visible la ventana*
     }
-    private void creaBotonesRegresarSalir(){
-        RegresarAU=new JButton("Regresar");
-        RegresarAU.setBounds(165,420,100,30);
-        RegresarAU.addActionListener(this);
-        VentanaAdmU.add(RegresarAU);
-        
-        SalirAU=new JButton("Salir");
-        SalirAU.setBounds(285,420,100,30);
-        SalirAU.addActionListener(this);
-        VentanaAdmU.add(SalirAU);
-    }
+   
     public void VentanaAdmU()
     {
-        AltaU=new JButton("Dar de Alta un Usuario");
-        AltaU.setBounds(95,20,170,30);
-        AltaU.addActionListener(this);
-        VentanaAdmU.add(AltaU);
-        
-        BajaUsuario=new JButton("Dar de Baja un Uusario");
-        BajaUsuario.setBounds(285,20,170,30);
-        BajaUsuario.addActionListener(this);
-        VentanaAdmU.add(BajaUsuario);
-        
-        CambioU=new JButton("Modificar un Usuario");
-        CambioU.setBounds(95,70,170,30);
-        CambioU.addActionListener(this);
-        VentanaAdmU.add(CambioU);
-        
-        ConsultaU=new JButton("Consultar un Usuario");
-        ConsultaU.setBounds(285,70,170,30);
-        ConsultaU.addActionListener(this);
-        VentanaAdmU.add(ConsultaU);
+        crearbotonesAdminUsuario();
         
         creaBotonesRegresarSalir();
-        
-        
+
         MostrarU=new JLabel("No. Usuario");
         MostrarU.setBounds(165,110,100,20);
         VentanaAdmU.add(MostrarU);
@@ -276,67 +247,25 @@ public class Cliente extends JFrame implements ActionListener{
             VentanaAdmU.add(MostrarU);
             aux=aux+20;
         }
-        //Caracteristicas de la ventana
-        VentanaAdmU.setLayout(null);
-        VentanaAdmU.setTitle("Usuarios");//Nombre de la ventana
-        VentanaAdmU.setSize(550,500);//Dimensiones de la ventana. Ancho y alto
-        VentanaAdmU.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//Permite que la ventana se pueda cerrar cuando le presionemos en la X
-        VentanaAdmU.setResizable(false);//Para que la ventana no se pueda reedimensionar
-        VentanaAdmU.setLocationRelativeTo(null);//permitir que la venana se despliegue en el centro de la pantalla
-        VentanaAdmU.setVisible(true);//Hacer visible la ventana*
+        caracteristicasVentana("Usuarios");
     }
-    public void setLabelsAndTextFieldsUser(){
-         text=new JLabel("Nombre Completo:");
-        text.setBounds(20,20,150,30);
-        VentanaAltaU.add(text);
-        nombre=new JTextField();
-        nombre.setBounds(180,20,150,30);
-        VentanaAltaU.add(nombre);
-        text=new JLabel("Alias:");
-        text.setBounds(20,60,150,30);
-        VentanaAltaU.add(text);
-        
-        nombreA=new JTextField();
-        nombreA.setBounds(180,60,150,30);
-        VentanaAltaU.add(nombreA);
-        
-        text=new JLabel("Contraseña:");
-        text.setBounds(20,100,150,30);
-        VentanaAltaU.add(text);
-        
-        passW=new JTextField();
-        passW.setBounds(180,100,150,30);
-        VentanaAltaU.add(passW);
-        
-        text=new JLabel("Tipo de Usuario:");
-        text.setBounds(20,140,150,30);
-        VentanaAltaU.add(text);
-        
-        tipoU=new JTextField();
-        tipoU.setBounds(180,140,150,30);
-        VentanaAltaU.add(tipoU);
-        RegresarU=new JButton("Regresar");
-        RegresarU.setBounds(185,190,120,30);
-        RegresarU.addActionListener(this);
-        VentanaAltaU.add(RegresarU);
-        //Caracteristicas de la ventana
-        VentanaAltaU.setLayout(null);
-        VentanaAltaU.setTitle("Dar de Alta");//Nombre de la ventana
-        VentanaAltaU.setSize(355,270);//Dimensiones de la ventana. Ancho y alto
-        VentanaAltaU.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//Permite que la ventana se pueda cerrar cuando le presionemos en la X
-        VentanaAltaU.setResizable(false);//Para que la ventana no se pueda reedimensionar
-        VentanaAltaU.setLocationRelativeTo(null);//permitir que la venana se despliegue en el centro de la pantalla
-        VentanaAltaU.setVisible(true);//Hacer visible la ventana*
-    }
+    
     public void AltaU()
     {
         AceptarU=new JButton("Dar de Alta");
         AceptarU.setBounds(50,190,120,30);
         AceptarU.addActionListener(this);
         VentanaAltaU.add(AceptarU);
-        this.setLabelsAndTextFieldsUser();
+        setLabelsAndTextFieldsUser();
     }
-    public void ConsultaUsuario(String name, String alias, String psw, String userType)
+    public void editaUsuario()
+    {
+        btnUpdateUser=new JButton("Actualiza Usuario");
+        btnUpdateUser.setBounds(50,190,120,30);
+        btnUpdateUser.addActionListener(this);
+        VentanaAltaU.add(btnUpdateUser);
+    }
+    public void ConsultaUsuario(String name, String alias, String psw, String userType, boolean editar)
     {
         this.setLabelsAndTextFieldsUser();
         nombre.setText(name);
@@ -344,10 +273,10 @@ public class Cliente extends JFrame implements ActionListener{
         passW.setText(psw);
         tipoU.setText(userType);
        
-        nombre.setEditable(false);
-        nombreA.setEditable(false);
-        passW.setEditable(false);
-        tipoU.setEditable(false);
+        nombre.setEditable(editar);
+        nombreA.setEditable(editar);
+        passW.setEditable(editar);
+        tipoU.setEditable(editar);
     }
     public void VentanaUs()//ventana para usuario
     {
@@ -366,46 +295,6 @@ public class Cliente extends JFrame implements ActionListener{
     /**
      * Ventanas para la administración de objetos...
      */
-    private void creaBotonesObje(){
-        /**
-         * Izquierda
-         */
-        btnAlarma = new JButton("Administrar Alarmas");
-        btnAlarma.setBounds(95,20,170,30);
-        
-        btnDismascota = new JButton("Administrar DisMasotas");
-        btnDismascota.setBounds(95,70,170,30);
-        
-        btnLampara = new JButton("Administrar Lámparas");
-        btnLampara.setBounds(95,120,170,30);
-                
-        btnRefrigerador = new JButton("Administrar Refrigeradores");
-        btnRefrigerador.setBounds(95,170,170,30);
-        /**
-         * Derecha
-         */
-        btnCortinas = new JButton("Administrar Cortinas");
-        btnCortinas.setBounds(285,20,170,30);
-        
-        btnIrrigador = new JButton("Administrar Irrigador");
-        btnIrrigador.setBounds(285,70,170,30);
-        
-        btnLuminaria = new JButton("Administrar Luminaria");
-        btnLuminaria.setBounds(285,120,170,30);
-        
-        btnTermostato = new JButton("Administrar Termostato");
-        btnTermostato.setBounds(285,170,170,30);
-        
-        VentanaAdmU.add(btnIrrigador);
-        VentanaAdmU.add(btnCortinas);
-        VentanaAdmU.add(btnLuminaria);
-        VentanaAdmU.add(btnTermostato);
-        VentanaAdmU.add(btnDismascota);
-        VentanaAdmU.add(btnAlarma);
-        VentanaAdmU.add(btnLampara);
-        VentanaAdmU.add(btnRefrigerador);
-    }
-    
     public void nuevaVenatanaAdminObjetos()
     {
         creaBotonesObje();
@@ -413,27 +302,7 @@ public class Cliente extends JFrame implements ActionListener{
          * Botones de Regresar y salir
          */
         creaBotonesRegresarSalir();
-        
-        /**
-         * Añadiendo el actionListener
-         */
-        btnAlarma.addActionListener(this);
-        btnCortinas.addActionListener(this);
-        btnDismascota.addActionListener(this);
-        btnIrrigador.addActionListener(this);
-        btnLampara.addActionListener(this);
-        btnRefrigerador.addActionListener(this);
-        btnLuminaria.addActionListener(this);    
-        btnTermostato.addActionListener(this);      
-        
-        //Caracteristicas de la ventana
-        VentanaAdmU.setLayout(null);
-        VentanaAdmU.setTitle("Objetos");//Nombre de la ventana
-        VentanaAdmU.setSize(550,500);//Dimensiones de la ventana. Ancho y alto
-        VentanaAdmU.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//Permite que la ventana se pueda cerrar cuando le presionemos en la X
-        VentanaAdmU.setResizable(false);//Para que la ventana no se pueda reedimensionar
-        VentanaAdmU.setLocationRelativeTo(null);//permitir que la venana se despliegue en el centro de la pantalla
-        VentanaAdmU.setVisible(true);//Hacer visible la ventana*
+        caracteristicasVentana("Objetos");
     }
     /**
      * ActionListener
@@ -525,11 +394,28 @@ public class Cliente extends JFrame implements ActionListener{
             }
             
         }
-        if(e.getSource()==CambioU)
+        if(e.getSource()==btnCambioU)
         {
-            
+            String numUsuario = JOptionPane.showInputDialog(null,"Ingrese numero de Usuario:");
+            int num = Integer.parseInt(numUsuario)-1;
+            editaUsuario = listaUsuarios.getUsuario(num);
+            VentanaAdmU.dispose();
+            VentanaAdmU.removeAll();
+            VentanaAdmU = new JFrame();
+            editaUsuario();
+            ConsultaUsuario(editaUsuario.getNombre(), editaUsuario.getAlias(), editaUsuario.getPassword(), editaUsuario.getTipoUsuario(), true);
+            try {
+                out.writeInt(4); // Consultamos
+                out.flush();
+                out.writeInt(0); // Clase usuario
+                out.flush();
+                out.writeObject(editaUsuario);
+                out.flush();
+            } catch (IOException ex) {
+                Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-        if(e.getSource()==ConsultaU)
+        if(e.getSource()==btnConsultaU)
         {
             String numUsuario = JOptionPane.showInputDialog(null,"Ingrese numero de Usuario:");
             int num=Integer.parseInt(numUsuario)-1;
@@ -545,9 +431,71 @@ public class Cliente extends JFrame implements ActionListener{
                 VentanaAdmU.removeAll();
                 
                 VentanaAdmU=new JFrame();
-                ConsultaUsuario(consultaUsuario.getNombre(), consultaUsuario.getAlias(), consultaUsuario.getPassword(), consultaUsuario.getTipoUsuario());
+                ConsultaUsuario(consultaUsuario.getNombre(), consultaUsuario.getAlias(), consultaUsuario.getPassword(), consultaUsuario.getTipoUsuario(), false);
             } catch (IOException ex) {
                 Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if(e.getSource() == btnUpdateUser){
+            String NombU=nombre.getText();
+            String NomA=nombreA.getText();
+            String PassU=passW.getText();
+            String TipU=tipoU.getText();
+            boolean check=true;
+            int id = editaUsuario.getId();
+            if(TipU.equals("Administrador")||TipU.equals("Usuario"))
+            {
+                for(int i=0;i<listaUsuarios.getTamLista();i++)
+                {
+                    Usuario aux=listaUsuarios.getUsuario(i);
+                    if(aux.getNombre().equals(NombU) && aux.getId() != editaUsuario.getId())
+                    {
+                        JOptionPane.showMessageDialog(null,"El nombre completo ya existe");
+                        check=false;
+                        break;
+                    }
+                    if(aux.getAlias().equals(NomA) && aux.getId() != editaUsuario.getId())
+                    {
+                        JOptionPane.showMessageDialog(null,"El usuario ya existe");
+                        check=false;
+                        break;
+                    }
+                }
+                if(NomA.length()<5)
+                {
+                    JOptionPane.showMessageDialog(null,"El nombre del Alias es muy corto\nMinimo de 5 caracteres");
+                    check=false;
+                }
+                else if(NomA.length()>20)
+                {
+                    JOptionPane.showMessageDialog(null,"El nombre del Alias es muy largo\nMaximo de 20 caracteres");
+                    check=false;
+                }
+                if(check==true)
+                {
+                    Usuario validatedEditUser=new Usuario(id,TipU,NomA,PassU,NombU);
+                    try {
+                        out.writeInt(3);
+                        out.flush();
+                        out.writeInt(0);
+                        out.flush();
+                        out.writeObject(validatedEditUser);
+                        out.flush();
+                        listaUsuarios.sobreEscribeUsuario(id+1, validatedEditUser);
+                    } catch (IOException ex) {
+                        Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
+                    JOptionPane.showMessageDialog(null,"Usuario Actualizadp");
+                    VentanaAltaU.dispose();
+                    VentanaAltaU.removeAll();
+                    VentanaAltaU = new JFrame();
+                    VentanaAdmU();
+                }    
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null,"El tipo Usuario es incorrecto");
             }
         }
         if(e.getSource()==AceptarU)
@@ -623,7 +571,141 @@ public class Cliente extends JFrame implements ActionListener{
         /////
     }
     
-    public void validaCamposUsuario(){
+    private void creaBotonesRegresarSalir(){
+        RegresarAU=new JButton("Regresar");
+        RegresarAU.setBounds(165,420,100,30);
+        RegresarAU.addActionListener(this);
+        VentanaAdmU.add(RegresarAU);
         
+        SalirAU=new JButton("Salir");
+        SalirAU.setBounds(285,420,100,30);
+        SalirAU.addActionListener(this);
+        VentanaAdmU.add(SalirAU);
+    }
+    private void crearbotonesAdminUsuario(){
+        AltaU=new JButton("Dar de Alta un Usuario");
+        AltaU.setBounds(95,20,170,30);
+        AltaU.addActionListener(this);
+        VentanaAdmU.add(AltaU);
+        
+        BajaUsuario=new JButton("Dar de Baja un Uusario");
+        BajaUsuario.setBounds(285,20,170,30);
+        BajaUsuario.addActionListener(this);
+        VentanaAdmU.add(BajaUsuario);
+        
+        btnCambioU=new JButton("Modificar un Usuario");
+        btnCambioU.setBounds(95,70,170,30);
+        btnCambioU.addActionListener(this);
+        VentanaAdmU.add(btnCambioU);
+        
+        btnConsultaU=new JButton("Consultar un Usuario");
+        btnConsultaU.setBounds(285,70,170,30);
+        btnConsultaU.addActionListener(this);
+        VentanaAdmU.add(btnConsultaU);
+    }
+    private void setLabelsAndTextFieldsUser(){
+        text=new JLabel("Nombre Completo:");
+        text.setBounds(20,20,150,30);
+        VentanaAltaU.add(text);
+        nombre=new JTextField();
+        nombre.setBounds(180,20,150,30);
+        VentanaAltaU.add(nombre);
+        text=new JLabel("Alias:");
+        text.setBounds(20,60,150,30);
+        VentanaAltaU.add(text);
+        
+        nombreA=new JTextField();
+        nombreA.setBounds(180,60,150,30);
+        VentanaAltaU.add(nombreA);
+        
+        text=new JLabel("Contraseña:");
+        text.setBounds(20,100,150,30);
+        VentanaAltaU.add(text);
+        
+        passW=new JTextField();
+        passW.setBounds(180,100,150,30);
+        VentanaAltaU.add(passW);
+        
+        text=new JLabel("Tipo de Usuario:");
+        text.setBounds(20,140,150,30);
+        VentanaAltaU.add(text);
+        
+        tipoU = new JTextField();
+        tipoU.setBounds(180,140,150,30);
+        VentanaAltaU.add(tipoU);
+        RegresarU=new JButton("Regresar");
+        RegresarU.setBounds(185,190,120,30);
+        RegresarU.addActionListener(this);
+        VentanaAltaU.add(RegresarU);
+        
+        //Caracteristicas de la ventana
+        VentanaAltaU.setLayout(null);
+        VentanaAltaU.setTitle("Dar de Alta");//Nombre de la ventana
+        VentanaAltaU.setSize(355,270);//Dimensiones de la ventana. Ancho y alto
+        VentanaAltaU.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//Permite que la ventana se pueda cerrar cuando le presionemos en la X
+        VentanaAltaU.setResizable(false);//Para que la ventana no se pueda reedimensionar
+        VentanaAltaU.setLocationRelativeTo(null);//permitir que la venana se despliegue en el centro de la pantalla
+        VentanaAltaU.setVisible(true);//Hacer visible la ventana*
+    }
+    private void creaBotonesObje(){
+        /**
+         * Izquierda
+         */
+        btnAlarma = new JButton("Administrar Alarmas");
+        btnAlarma.setBounds(95,20,170,30);
+        
+        btnDismascota = new JButton("Administrar DisMasotas");
+        btnDismascota.setBounds(95,70,170,30);
+        
+        btnLampara = new JButton("Administrar Lámparas");
+        btnLampara.setBounds(95,120,170,30);
+                
+        btnRefrigerador = new JButton("Administrar Refrigeradores");
+        btnRefrigerador.setBounds(95,170,170,30);
+        /**
+         * Derecha
+         */
+        btnCortinas = new JButton("Administrar Cortinas");
+        btnCortinas.setBounds(285,20,170,30);
+        
+        btnIrrigador = new JButton("Administrar Irrigador");
+        btnIrrigador.setBounds(285,70,170,30);
+        
+        btnLuminaria = new JButton("Administrar Luminaria");
+        btnLuminaria.setBounds(285,120,170,30);
+        
+        btnTermostato = new JButton("Administrar Termostato");
+        btnTermostato.setBounds(285,170,170,30);
+        
+        VentanaAdmU.add(btnIrrigador);
+        VentanaAdmU.add(btnCortinas);
+        VentanaAdmU.add(btnLuminaria);
+        VentanaAdmU.add(btnTermostato);
+        VentanaAdmU.add(btnDismascota);
+        VentanaAdmU.add(btnAlarma);
+        VentanaAdmU.add(btnLampara);
+        VentanaAdmU.add(btnRefrigerador);
+        
+        /**
+         * Añadiendo el actionListener
+         */
+        btnAlarma.addActionListener(this);
+        btnCortinas.addActionListener(this);
+        btnDismascota.addActionListener(this);
+        btnIrrigador.addActionListener(this);
+        btnLampara.addActionListener(this);
+        btnRefrigerador.addActionListener(this);
+        btnLuminaria.addActionListener(this);    
+        btnTermostato.addActionListener(this);      
+    }
+    private void caracteristicasVentana(String titulo){
+        //Caracteristicas de la ventana
+        VentanaAdmU.setLayout(null);
+        VentanaAdmU.setTitle(titulo);//Nombre de la ventana
+        VentanaAdmU.setSize(550,500);//Dimensiones de la ventana. Ancho y alto
+        VentanaAdmU.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//Permite que la ventana se pueda cerrar cuando le presionemos en la X
+        VentanaAdmU.setResizable(false);//Para que la ventana no se pueda reedimensionar
+        VentanaAdmU.setLocationRelativeTo(null);//permitir que la venana se despliegue en el centro de la pantalla
+        VentanaAdmU.setVisible(true);//Hacer visible la ventana*
     }
 }

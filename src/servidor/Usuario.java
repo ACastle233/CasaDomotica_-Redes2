@@ -108,12 +108,13 @@ class ListaUsuarios implements Serializable{
     }
     public int getTamLista()
     {
-        ListIterator li = lista.listIterator();
         return lista.size();
+    }
+    public void sobreEscribeUsuario(int i, Usuario edit){
+        lista.set(i, edit);
     }
     public Usuario getUsuario(int i)
     {
-        ListIterator li = lista.listIterator();
         return (Usuario)lista.get(i);
     }
     public void AddUsuario(Usuario u)

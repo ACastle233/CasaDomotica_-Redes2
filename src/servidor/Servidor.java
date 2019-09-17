@@ -18,8 +18,8 @@ public class Servidor {
      try{
         System.out.println("Recuperando elementos");
         ObjectInputStream in = new ObjectInputStream(new FileInputStream("Usuarios.txt"));
-        int TipoU=in.readInt();
-        int Cant=in.readInt();
+        int TipoU = in.readInt();
+        int Cant = in.readInt();
         ListaUsuarios lp = (ListaUsuarios) in.readObject();
         
         System.out.println("\nRecuperando objetos");
@@ -156,7 +156,6 @@ public class Servidor {
                 {
                     numU=i;
                     String res="Ingreso Aceptado";
-                    verificar=true;
                     out.writeBoolean(verificar);
                     out.flush();
                     out.writeUTF(res);
@@ -164,16 +163,16 @@ public class Servidor {
                     break;
                 }else
                 {
-                        String res="Credenciales Incorrectas";
-                        verificar=false;
-                        out.writeBoolean(verificar);
-                        out.flush();
-                        out.writeUTF(res);
-                        out.flush();
-                        break;
+                    String res="Credenciales Incorrectas";
+                    verificar=false;
+                    out.writeBoolean(verificar);
+                    out.flush();
+                    out.writeUTF(res);
+                    out.flush();
+                    break;
                 }
             }
-            if(!verificar)
+            if(verificar==false)
             {
                 System.out.println("Fallo en la conexion");
                 cl.close();
@@ -210,15 +209,15 @@ public class Servidor {
                     out.flush();
                     
                     //Recibir respuesta
-                    int Respuesta=in.readInt();
+                    int Respuesta = in.readInt();
+                    int TipoClase = in.readInt();
                     switch(Respuesta)
                     {
                         case 1://Dar de Alta
                         {
-                            int TipoClase=in.readInt();
                             switch(TipoClase)
                             {
-                                case 0:
+                                case 0: //Clase Usuario
                                 {
                                     Usuario newUsuario=(Usuario)in.readObject();
                                     lp.AddUsuario(newUsuario);
@@ -267,10 +266,9 @@ public class Servidor {
                         }
                         case 2://Dar de Baja
                         {
-                            int TipoClase = in.readInt();
                             switch(TipoClase)
                             {
-                                case 0:  // Usuario
+                                case 0:  //Clase Usuario
                                 {
                                     Usuario DeleteU = (Usuario)in.readObject();
                                     for(int i=0;i<lp.getTamLista();i++)
@@ -320,18 +318,57 @@ public class Servidor {
                             }
                             break;
                         }
-                        case 3:
+                        case 3: //Cambio-sobreescribir
                         {
+                            switch(TipoClase)
+                            {
+                                case 0://Clase Usuario
+                                {
+                                    
+                                    break;
+                                }
+                                case 1:
+                                {
+                                    
+                                    break;
+                                }
+                                case 2:
+                                {
+                                    break;
+                                }
+                                case 3:
+                                {
+                                    break;
+                                }
+                                case 4:
+                                {
+                                    break;
+                                }
+                                case 5:
+                                {
+                                    break;
+                                }
+                                case 6:
+                                {
+                                    break;
+                                }
+                                case 7:
+                                {
+                                    break;
+                                }
+                                case 8:
+                                {
+                                    break;
+                                }
+                            }          
                             break;
                         }
                         case 4: //Consulta
                         {
-                            int TipoClase=in.readInt();
                             switch(TipoClase)
                             {
-                                case 0:
+                                case 0://Clase Usuario
                                 {
-                                    
                                     break;
                                 }
                                 case 1:
