@@ -404,16 +404,6 @@ public class Cliente extends JFrame implements ActionListener{
             VentanaAdmU = new JFrame();
             editaUsuario();
             ConsultaUsuario(editaUsuario.getNombre(), editaUsuario.getAlias(), editaUsuario.getPassword(), editaUsuario.getTipoUsuario(), true);
-            try {
-                out.writeInt(4); // Consultamos
-                out.flush();
-                out.writeInt(0); // Clase usuario
-                out.flush();
-                out.writeObject(editaUsuario);
-                out.flush();
-            } catch (IOException ex) {
-                Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
         if(e.getSource()==btnConsultaU)
         {

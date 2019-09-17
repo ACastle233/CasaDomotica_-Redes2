@@ -211,6 +211,8 @@ public class Servidor {
                     //Recibir respuesta
                     int Respuesta = in.readInt();
                     int TipoClase = in.readInt();
+                    System.out.println(Respuesta);
+                    System.out.println(TipoClase);
                     switch(Respuesta)
                     {
                         case 1://Dar de Alta
@@ -324,7 +326,10 @@ public class Servidor {
                             {
                                 case 0://Clase Usuario
                                 {
-                                    
+                                    Usuario editUser = (Usuario)in.readObject();
+                                    System.out.println(lp);
+                                    lp.sobreEscribeUsuario(editUser.getId()+1, editUser);
+                                    System.out.println(lp);
                                     break;
                                 }
                                 case 1:
