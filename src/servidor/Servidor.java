@@ -152,45 +152,28 @@ public class Servidor {
             for(int i=0;i<lp.getTamLista();i++)
             {
                 Usuario aux=lp.getUsuario(i);
-                if(aux.getAlias().equals(u.getAlias()))
+                if(aux.getAlias().equals(u.getAlias()) && aux.getPassword().equals(u.getPassword()))
                 {
-                    if(aux.getPassword().equals(u.getPassword()))
-                    {
-                        numU=i;
-                        String res="Ingreso Aceptado";
-                        verificar=true;
-                        out.writeBoolean(verificar);
-                        out.flush();
-                        out.writeUTF(res);
-                        out.flush();
-                        break;
-                    }
-                    else
-                    {
-                        String res="Contraseña Incorrecta";
+                    numU=i;
+                    String res="Ingreso Aceptado";
+                    verificar=true;
+                    out.writeBoolean(verificar);
+                    out.flush();
+                    out.writeUTF(res);
+                    out.flush();
+                    break;
+                }else
+                {
+                        String res="Credenciales Incorrectas";
                         verificar=false;
                         out.writeBoolean(verificar);
                         out.flush();
                         out.writeUTF(res);
                         out.flush();
                         break;
-                    }
-                }
-                else
-                {
-                    if(i==(lp.getTamLista()-1))
-                    {
-                        String res="No existe el usuario";
-                        verificar=false;
-                        out.writeBoolean(verificar);
-                        out.flush();
-                        out.writeUTF(res);
-                        out.flush();
-                        break;
-                    }
                 }
             }
-            if(verificar==false)
+            if(!verificar)
             {
                 System.out.println("Fallo en la conexion");
                 cl.close();
@@ -200,7 +183,7 @@ public class Servidor {
             {   
                 System.out.println("Cliente aceptado");
                 //enviar datos del usuario
-                Usuario Usr=lp.getUsuario(numU);
+                Usuario Usr = lp.getUsuario(numU);
                 out.writeObject(Usr);
                 out.flush();
                 if(Usr.getTipoUsuario().equals("Administrador"))
@@ -241,7 +224,7 @@ public class Servidor {
                                     lp.AddUsuario(newUsuario);
                                     for(int i=0;i<lp.getTamLista();i++)
                                     {
-                                        newUsuario=lp.getUsuario(i);
+                                        newUsuario = lp.getUsuario(i);
                                         System.out.println("U."+newUsuario.getNombre()+" id:"+newUsuario.getId());
                                     }
                                     break;
@@ -282,34 +265,28 @@ public class Servidor {
                             }
                             break;
                         }
-                        case 2:
+                        case 2://Dar de Baja
                         {
-                            int TipoClase=in.readInt();
+                            int TipoClase = in.readInt();
                             switch(TipoClase)
                             {
-                                case 0:
+                                case 0:  // Usuario
                                 {
-                                    Usuario newUsuario=(Usuario)in.readObject();
-                                    lp.AddUsuario(newUsuario);
+                                    Usuario DeleteU = (Usuario)in.readObject();
                                     for(int i=0;i<lp.getTamLista();i++)
                                     {
-                                        newUsuario=lp.getUsuario(i);
-                                        System.out.println("U."+newUsuario.getNombre()+" id:"+newUsuario.getId());
-                                    }
-                                    break;
-                                }
-                                case 1:
-                                {
-                                    Usuario DeleteU=(Usuario)in.readObject();
-                                    for(int i=0;i<lp.getTamLista();i++)
-                                    {
-                                        Usuario aux=lp.getUsuario(i);
+                                        Usuario aux = lp.getUsuario(i);
                                         if(aux.getAlias().equals(DeleteU.getAlias()))
                                         {
                                             System.out.println("Usuario Eliminado\nUsuario:"+aux.getAlias());
                                             lp.DeleteUsuario(i);
                                         }
                                     }
+                                    break;
+                                }
+                                case 1:
+                                {
+                                    
                                     break;
                                 }
                                 case 2:
@@ -347,8 +324,50 @@ public class Servidor {
                         {
                             break;
                         }
-                        case 4:
+                        case 4: //Consulta
                         {
+                            int TipoClase=in.readInt();
+                            switch(TipoClase)
+                            {
+                                case 0:
+                                {
+                                    
+                                    break;
+                                }
+                                case 1:
+                                {
+                                    
+                                    break;
+                                }
+                                case 2:
+                                {
+                                    break;
+                                }
+                                case 3:
+                                {
+                                    break;
+                                }
+                                case 4:
+                                {
+                                    break;
+                                }
+                                case 5:
+                                {
+                                    break;
+                                }
+                                case 6:
+                                {
+                                    break;
+                                }
+                                case 7:
+                                {
+                                    break;
+                                }
+                                case 8:
+                                {
+                                    break;
+                                }
+                            }                            
                             break;
                         }
                         case 5:
