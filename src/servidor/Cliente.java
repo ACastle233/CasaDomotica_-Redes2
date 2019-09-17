@@ -22,6 +22,7 @@ public class Cliente extends JFrame implements ActionListener{
     JFrame VentanaA = new JFrame();
     JFrame VentanaU = new JFrame();
     JFrame VentanaAdmU = new JFrame();
+    JFrame VentanaAdmObjetos = new JFrame();
     JFrame VentanaAltaU = new JFrame();
     /////////////////Componentes de Ventana///////////////
     //Labels
@@ -57,6 +58,9 @@ public class Cliente extends JFrame implements ActionListener{
         /**
          * Ventana de Administración de Objetos
          */
+        JButton RegresarAObj;        
+        JButton SalirAObj;
+        
         JButton btnRefrigerador;
         JButton btnAlarma;
         JButton btnCortinas;
@@ -66,12 +70,77 @@ public class Cliente extends JFrame implements ActionListener{
         JButton btnLuminaria;
         JButton btnTermostato;
         
-        Usuario editaUsuario;
+        /**
+         * Ventana Administrador de Refris
+         */
         
+        JButton btnAltaRefri;
+        JButton btnBajaRefri;
+        JButton btnCambioRefri;
+        JButton btnConsultaRefri;
+        /**
+         * Ventana Administrador de Cortinas
+         */
+        JButton btnAltaCortinas;
+        JButton btnBajaCortina;
+        JButton btnCambioCortina;
+        JButton btnConsultaCortina;
+        /**
+         * Ventana Administrador de Termostatos
+         */
+        JButton btnAltaTermostato;
+        JButton btnBajaTermostato;
+        JButton btnCambioTermostato;
+        JButton btnConsultaTermostato;
+        /**
+         * Ventana Administrador de Dispensadores de alimento
+         */
+        JButton btnAltaDisAlimento;
+        JButton btnBajaDisAlimento;
+        JButton btnCambioDisAlimento;
+        JButton btnConsultaDisAlimento;
+        Usuario editaUsuario;
+        /**
+         * Ventana Administrador de Irrigadores
+         */
+        JButton btnAltaIrrigador;
+        JButton btnBajaIrrigador;
+        JButton btnCambioIrrigador;
+        JButton btnConsultaIrrigador;
+        /**
+         * Ventana Administrador de Alarmas
+         */
+        JButton btnAltaAlarma;
+        JButton btnBajaAlarma;
+        JButton btnCambioAlarma;
+        JButton btnConsultaAlarma;
+        /**
+         * Ventana Administrador de Lamparas
+         */
+        JButton btnAltaLampara;
+        JButton btnBajaLampara;
+        JButton btnCambioLampara;
+        JButton btnConsultaLampara;
+        /**
+         * Ventana Administrador de Luminarias
+         */
+        JButton btnAltaLuminaria;
+        JButton btnBajaLuminaria;
+        JButton btnCambioLuminaria;
+        JButton btnConsultaLuminaria;
         ObjectOutputStream out;
         ObjectInputStream in;
     
     public static ListaUsuarios listaUsuarios;
+    //ARREGLOS DE OBJETOS
+            ArrayList <Refrigerador> listRefri;
+            ArrayList <Cortinas> listCortinas;
+            ArrayList <Termostato> listTermostato;
+            ArrayList <DisMascota> listMascotas;
+            ArrayList <Irrigador> listIrrigador;
+            ArrayList <Alarma> listAlarma;
+            ArrayList <Lampara> listLampara;
+            ArrayList <Luminaria> listLuminaria;
     public Cliente()
     {
     }
@@ -85,15 +154,7 @@ public class Cliente extends JFrame implements ActionListener{
     {
         try
         {
-            //ARREGLOS DE OBJETOS
-            ArrayList <Refrigerador> ListaR;
-            ArrayList <Cortinas> ListaC;
-            ArrayList <Termostato> ListaT;
-            ArrayList <DisMascota> ListaM;
-            ArrayList <Irrigador> ListaI;
-            ArrayList <Alarma> ListaA;
-            ArrayList <Lampara> ListaL;
-            ArrayList <Luminaria> ListaLu;
+            
             //Creamos el socket y nos conectamos
             Socket cl = new Socket("127.0.0.1", 9000);
             out = new ObjectOutputStream(cl.getOutputStream());
@@ -107,8 +168,8 @@ public class Cliente extends JFrame implements ActionListener{
             out.writeObject(u);
             out.flush();
             //Recibir respuesta
-            boolean verificar=in.readBoolean();
-            String res=in.readUTF();
+            boolean verificar = in.readBoolean();
+            String res = in.readUTF();
             JOptionPane.showMessageDialog(null,res);
             
             if(verificar==true)
@@ -117,33 +178,33 @@ public class Cliente extends JFrame implements ActionListener{
                 Ventana.removeAll();
                 Ventana=new JFrame();
                 //recibir usuario
-                Usuario Urs=(Usuario)in.readObject();
+                Usuario Urs = (Usuario)in.readObject();
                 if(Urs.getTipoUsuario().equals("Administrador"))
                 {
                     listaUsuarios=(ListaUsuarios)in.readObject();//recibir lista de usuarios
                     //recibir listas de objetos
-                    ListaR=(ArrayList <Refrigerador>)in.readObject();
-                    ListaC=(ArrayList <Cortinas>)in.readObject();
-                    ListaT=(ArrayList <Termostato>)in.readObject();
-                    ListaM=(ArrayList <DisMascota>)in.readObject();
-                    ListaI=(ArrayList <Irrigador>)in.readObject();
-                    ListaA=(ArrayList <Alarma>)in.readObject();
-                    ListaL=(ArrayList <Lampara>)in.readObject();
-                    ListaLu=(ArrayList <Luminaria>)in.readObject();
+                    listRefri=(ArrayList <Refrigerador>)in.readObject();
+                    listCortinas=(ArrayList <Cortinas>)in.readObject();
+                    listTermostato=(ArrayList <Termostato>)in.readObject();
+                    listMascotas=(ArrayList <DisMascota>)in.readObject();
+                    listIrrigador=(ArrayList <Irrigador>)in.readObject();
+                    listAlarma=(ArrayList <Alarma>)in.readObject();
+                    listLampara=(ArrayList <Lampara>)in.readObject();
+                    listLuminaria=(ArrayList <Luminaria>)in.readObject();
                     //abrir vetana de administrador
                     VentanaAdmi();
                 }
                 else
                 {
                     //recibir listas de objetos
-                    ListaR=(ArrayList <Refrigerador>)in.readObject();
-                    ListaC=(ArrayList <Cortinas>)in.readObject();
-                    ListaT=(ArrayList <Termostato>)in.readObject();
-                    ListaM=(ArrayList <DisMascota>)in.readObject();
-                    ListaI=(ArrayList <Irrigador>)in.readObject();
-                    ListaA=(ArrayList <Alarma>)in.readObject();
-                    ListaL=(ArrayList <Lampara>)in.readObject();
-                    ListaLu=(ArrayList <Luminaria>)in.readObject();
+                    listRefri=(ArrayList <Refrigerador>)in.readObject();
+                    listCortinas=(ArrayList <Cortinas>)in.readObject();
+                    listTermostato=(ArrayList <Termostato>)in.readObject();
+                    listMascotas=(ArrayList <DisMascota>)in.readObject();
+                    listIrrigador=(ArrayList <Irrigador>)in.readObject();
+                    listAlarma=(ArrayList <Alarma>)in.readObject();
+                    listLampara=(ArrayList <Lampara>)in.readObject();
+                    listLuminaria=(ArrayList <Luminaria>)in.readObject();
                     //abrir ventana de usuario
                     VentanaUs();
                 }
@@ -223,7 +284,7 @@ public class Cliente extends JFrame implements ActionListener{
     {
         crearbotonesAdminUsuario();
         
-        creaBotonesRegresarSalir();
+        creaBotonesRegresarSalir(VentanaAdmU);
 
         MostrarU=new JLabel("No. Usuario");
         MostrarU.setBounds(165,110,100,20);
@@ -247,7 +308,102 @@ public class Cliente extends JFrame implements ActionListener{
             VentanaAdmU.add(MostrarU);
             aux=aux+20;
         }
-        caracteristicasVentana("Usuarios");
+        caracteristicasVentana("Usuarios", VentanaAdmU);
+    }
+    
+    public void labelsVentanasAdminObj(String noObj, String name, ArrayList list){
+        MostrarU = new JLabel(noObj);
+        MostrarU.setBounds(165,110,100,20);
+        VentanaAdmObjetos.add(MostrarU);
+        
+        MostrarU = new JLabel(name);
+        MostrarU.setBounds(285,110,100,20);
+        VentanaAdmObjetos.add(MostrarU);
+        
+        int aux=140;
+        for(int i=0;i<list.size();i++)
+        {
+            MostrarU = new JLabel(""+(i+1));
+            MostrarU.setBounds(165,aux,100,20);
+            VentanaAdmObjetos.add(MostrarU);
+            aux=aux+20;
+        }
+        aux=140;
+        
+        for(int i=0;i<list.size();i++)
+        {
+            MostrarU=new JLabel(""+list.get(i));
+            MostrarU.setBounds(285,aux,100,20);
+            VentanaAdmObjetos.add(MostrarU);
+            aux=aux+20;
+        }
+        
+        caracteristicasVentana(name, VentanaAdmObjetos);
+        
+    }
+    
+    public void VentanaAdminRefri(){
+        crearbotonesAdminRefris();
+        
+        creaBotonesRegresarSalirObjetos(VentanaAdmObjetos);
+
+        labelsVentanasAdminObj("No. Refrigerador", "Refrigeradores", listRefri);
+    }
+    
+    public void VentanaAdminAlarma(){
+        crearbotonesAdminAlarmas();
+        
+        creaBotonesRegresarSalirObjetos(VentanaAdmObjetos);
+        
+        labelsVentanasAdminObj("No. Alarmas", "Alarmas", listAlarma);
+    }
+    
+    public void VentanaAdminCortina(){
+        crearbotonesAdminCortinas();
+        
+        creaBotonesRegresarSalirObjetos(VentanaAdmObjetos);
+
+        labelsVentanasAdminObj("No. Cortinas", "Cortinas", listCortinas);
+    }
+    
+    public void VentanaAdminTermostato(){
+        crearbotonesAdminTermostato();
+        
+        creaBotonesRegresarSalirObjetos(VentanaAdmObjetos);
+
+        labelsVentanasAdminObj("No. Termostatos", "Termostatos", listTermostato);
+    }
+    
+    public void VentanaAdminDisMascota(){
+        crearbotonesAdminDisAlimento();
+        
+        creaBotonesRegresarSalirObjetos(VentanaAdmObjetos);
+
+        labelsVentanasAdminObj("No. Dispensador", "Dispensadores", listMascotas);
+    }
+    
+    public void VentanaAdminIrrigador(){
+        crearbotonesAdminIrrigadores();
+        
+        creaBotonesRegresarSalirObjetos(VentanaAdmObjetos);
+
+        labelsVentanasAdminObj("No. Irrigador", "Irrigador", listIrrigador);
+    }
+    
+    public void VentanaAdminLampara(){
+        crearbotonesAdminLamparas();
+        
+        creaBotonesRegresarSalirObjetos(VentanaAdmObjetos);
+
+        labelsVentanasAdminObj("No. Lampara", "Lampara", listLampara);
+    }
+    
+    public void VentanaAdminIluminaria(){
+        crearbotonesAdminLamparas();
+        
+        creaBotonesRegresarSalirObjetos(VentanaAdmObjetos);
+
+        labelsVentanasAdminObj("No. Luminaria", "Luminaria", listLuminaria);
     }
     
     public void AltaU()
@@ -298,11 +454,8 @@ public class Cliente extends JFrame implements ActionListener{
     public void nuevaVenatanaAdminObjetos()
     {
         creaBotonesObje();
-        /**
-         * Botones de Regresar y salir
-         */
-        creaBotonesRegresarSalir();
-        caracteristicasVentana("Objetos");
+        creaBotonesRegresarSalir(VentanaAdmU);
+        caracteristicasVentana("Objetos", VentanaAdmU);
     }
     /**
      * ActionListener
@@ -328,6 +481,106 @@ public class Cliente extends JFrame implements ActionListener{
             VentanaA.dispose();
             VentanaA.removeAll();
             VentanaA=new JFrame();
+            nuevaVenatanaAdminObjetos();
+        }
+        if(e.getSource()==btnRefrigerador)
+        {
+            VentanaAdmU.dispose();
+            VentanaAdmU.removeAll();
+            VentanaAdmU=new JFrame();
+            VentanaAdmObjetos.dispose();
+            VentanaAdmObjetos.removeAll();
+            VentanaAdmObjetos=new JFrame();
+            VentanaAdminRefri();
+        }
+        if(e.getSource()==btnCortinas)
+        {
+            VentanaAdmU.dispose();
+            VentanaAdmU.removeAll();
+            VentanaAdmU=new JFrame();
+            VentanaAdmObjetos.dispose();
+            VentanaAdmObjetos.removeAll();
+            VentanaAdmObjetos=new JFrame();
+            VentanaAdminCortina();
+        }
+        if(e.getSource()==btnIrrigador)
+        {
+            VentanaAdmU.dispose();
+            VentanaAdmU.removeAll();
+            VentanaAdmU=new JFrame();
+            VentanaAdmObjetos.dispose();
+            VentanaAdmObjetos.removeAll();
+            VentanaAdmObjetos=new JFrame();
+            VentanaAdminIrrigador();
+        }
+        if(e.getSource()==btnLuminaria)
+        {
+            VentanaAdmU.dispose();
+            VentanaAdmU.removeAll();
+            VentanaAdmU=new JFrame();
+            VentanaAdmObjetos.dispose();
+            VentanaAdmObjetos.removeAll();
+            VentanaAdmObjetos=new JFrame();
+            VentanaAdminIluminaria();
+        }
+        /**
+         * JButton btnRefrigerador;
+        JButton btnAlarma;
+        JButton btnCortinas;
+        JButton btnDismascota;
+        JButton btnIrrigador;
+        JButton btnLampara;
+        JButton btnLuminaria;
+        JButton btnTermostato;
+         */
+        if(e.getSource()==btnTermostato)
+        {
+            VentanaAdmU.dispose();
+            VentanaAdmU.removeAll();
+            VentanaAdmU=new JFrame();
+            VentanaAdmObjetos.dispose();
+            VentanaAdmObjetos.removeAll();
+            VentanaAdmObjetos=new JFrame();
+            VentanaAdminTermostato();
+        }
+        if(e.getSource()==btnLampara)
+        {
+            VentanaAdmU.dispose();
+            VentanaAdmU.removeAll();
+            VentanaAdmU=new JFrame();
+            VentanaAdmObjetos.dispose();
+            VentanaAdmObjetos.removeAll();
+            VentanaAdmObjetos=new JFrame();
+            VentanaAdminLampara();
+        }
+        if(e.getSource()==btnDismascota)
+        {
+            VentanaAdmU.dispose();
+            VentanaAdmU.removeAll();
+            VentanaAdmU=new JFrame();
+            VentanaAdmObjetos.dispose();
+            VentanaAdmObjetos.removeAll();
+            VentanaAdmObjetos=new JFrame();
+            VentanaAdminDisMascota();
+        }
+        if(e.getSource()==btnAlarma)
+        {
+            VentanaAdmU.dispose();
+            VentanaAdmU.removeAll();
+            VentanaAdmU=new JFrame();
+            VentanaAdmObjetos.dispose();
+            VentanaAdmObjetos.removeAll();
+            VentanaAdmObjetos=new JFrame();
+            VentanaAdminAlarma();
+        }
+        if(e.getSource()==RegresarAObj)
+        {
+            VentanaAdmObjetos.dispose();
+            VentanaAdmObjetos.removeAll();
+            VentanaAdmObjetos=new JFrame();
+            VentanaAdmU.dispose();
+            VentanaAdmU.removeAll();
+            VentanaAdmU=new JFrame();
             nuevaVenatanaAdminObjetos();
         }
         if(e.getSource()==SalirA)
@@ -376,10 +629,10 @@ public class Cliente extends JFrame implements ActionListener{
         }
         if(e.getSource()==BajaUsuario)
         {
-            String Cnum=JOptionPane.showInputDialog(null,"Ingrese numero de Usuario:");
-            int num=Integer.parseInt(Cnum);
-            num=num-1;
-            Usuario DeleteU=listaUsuarios.getUsuario(num);
+            String Cnum = JOptionPane.showInputDialog(null,"Ingrese numero de Usuario:");
+            int num = Integer.parseInt(Cnum);
+            num = num-1;
+            Usuario DeleteU = listaUsuarios.getUsuario(num);
             try {
                 out.writeInt(2);
                 out.flush();
@@ -558,20 +811,33 @@ public class Cliente extends JFrame implements ActionListener{
             VentanaAltaU=new JFrame();
             VentanaAdmU();
         }
+        
         /////
     }
     
-    private void creaBotonesRegresarSalir(){
+    private void creaBotonesRegresarSalirObjetos(JFrame ventana){
+        RegresarAObj=new JButton("Regresar");
+        RegresarAObj.setBounds(165,420,100,30);
+        RegresarAObj.addActionListener(this);
+        ventana.add(RegresarAObj);
+        
+        SalirAObj=new JButton("Salir");
+        SalirAObj.setBounds(285,420,100,30);
+        SalirAObj.addActionListener(this);
+        ventana.add(SalirAObj);
+    }
+    private void creaBotonesRegresarSalir(JFrame ventana){
         RegresarAU=new JButton("Regresar");
         RegresarAU.setBounds(165,420,100,30);
         RegresarAU.addActionListener(this);
-        VentanaAdmU.add(RegresarAU);
+        ventana.add(RegresarAU);
         
         SalirAU=new JButton("Salir");
         SalirAU.setBounds(285,420,100,30);
         SalirAU.addActionListener(this);
-        VentanaAdmU.add(SalirAU);
+        ventana.add(SalirAU);
     }
+    
     private void crearbotonesAdminUsuario(){
         AltaU=new JButton("Dar de Alta un Usuario");
         AltaU.setBounds(95,20,170,30);
@@ -688,14 +954,190 @@ public class Cliente extends JFrame implements ActionListener{
         btnLuminaria.addActionListener(this);    
         btnTermostato.addActionListener(this);      
     }
-    private void caracteristicasVentana(String titulo){
+    private void caracteristicasVentana(String titulo, JFrame ventana){
         //Caracteristicas de la ventana
-        VentanaAdmU.setLayout(null);
-        VentanaAdmU.setTitle(titulo);//Nombre de la ventana
-        VentanaAdmU.setSize(550,500);//Dimensiones de la ventana. Ancho y alto
-        VentanaAdmU.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//Permite que la ventana se pueda cerrar cuando le presionemos en la X
-        VentanaAdmU.setResizable(false);//Para que la ventana no se pueda reedimensionar
-        VentanaAdmU.setLocationRelativeTo(null);//permitir que la venana se despliegue en el centro de la pantalla
-        VentanaAdmU.setVisible(true);//Hacer visible la ventana*
+        ventana.setLayout(null);
+        ventana.setTitle(titulo);//Nombre de la ventana
+        ventana.setSize(550,500);//Dimensiones de la ventana. Ancho y alto
+        ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//Permite que la ventana se pueda cerrar cuando le presionemos en la X
+        ventana.setResizable(false);//Para que la ventana no se pueda reedimensionar
+        ventana.setLocationRelativeTo(null);//permitir que la venana se despliegue en el centro de la pantalla
+        ventana.setVisible(true);//Hacer visible la ventana*
+    }
+    
+    private void crearbotonesAdminRefris(){
+        btnAltaRefri=new JButton("Dar de Alta un Refrigerador");
+        btnAltaRefri.setBounds(95,20,170,30);
+        btnAltaRefri.addActionListener(this);
+        VentanaAdmObjetos.add(btnAltaRefri);
+        
+        btnBajaRefri=new JButton("Dar de Baja un Refrigerador");
+        btnBajaRefri.setBounds(285,20,170,30);
+        btnBajaRefri.addActionListener(this);
+        VentanaAdmObjetos.add(btnBajaRefri);
+        
+        btnCambioRefri=new JButton("Modificar un Refrigerador");
+        btnCambioRefri.setBounds(95,70,170,30);
+        btnCambioRefri.addActionListener(this);
+        VentanaAdmObjetos.add(btnCambioRefri);
+        
+        btnConsultaRefri=new JButton("Consultar un Refrigerador");
+        btnConsultaRefri.setBounds(285,70,170,30);
+        btnConsultaRefri.addActionListener(this);
+        VentanaAdmObjetos.add(btnConsultaRefri);
+    }
+    
+    private void crearbotonesAdminCortinas(){
+        btnAltaCortinas=new JButton("Dar de Alta una Cortina");
+        btnAltaCortinas.setBounds(95,20,170,30);
+        btnAltaCortinas.addActionListener(this);
+        VentanaAdmObjetos.add(btnAltaCortinas);
+        
+        btnBajaCortina=new JButton("Dar de Baja una Cortina");
+        btnBajaCortina.setBounds(285,20,170,30);
+        btnBajaCortina.addActionListener(this);
+        VentanaAdmObjetos.add(btnBajaCortina);
+        
+        btnCambioCortina=new JButton("Modificar una Cortina");
+        btnCambioCortina.setBounds(95,70,170,30);
+        btnCambioCortina.addActionListener(this);
+        VentanaAdmObjetos.add(btnCambioCortina);
+        
+        btnConsultaCortina=new JButton("Consultar una Cortina");
+        btnConsultaCortina.setBounds(285,70,170,30);
+        btnConsultaCortina.addActionListener(this);
+        VentanaAdmObjetos.add(btnConsultaCortina);
+    }
+    
+    private void crearbotonesAdminTermostato(){
+        btnAltaTermostato=new JButton("Dar de Alta un Termostato");
+        btnAltaTermostato.setBounds(95,20,170,30);
+        btnAltaTermostato.addActionListener(this);
+        VentanaAdmObjetos.add(btnAltaTermostato);
+        
+        btnBajaTermostato=new JButton("Dar de Baja un Termostato");
+        btnBajaTermostato.setBounds(285,20,170,30);
+        btnBajaTermostato.addActionListener(this);
+        VentanaAdmObjetos.add(btnBajaTermostato);
+        
+        btnCambioTermostato=new JButton("Modificar un Termostato");
+        btnCambioTermostato.setBounds(95,70,170,30);
+        btnCambioTermostato.addActionListener(this);
+        VentanaAdmObjetos.add(btnCambioTermostato);
+        
+        btnConsultaTermostato=new JButton("Consultar un Termostato");
+        btnConsultaTermostato.setBounds(285,70,170,30);
+        btnConsultaTermostato.addActionListener(this);
+        VentanaAdmObjetos.add(btnConsultaTermostato);
+    }
+    
+    private void crearbotonesAdminDisAlimento(){
+        btnAltaDisAlimento=new JButton("Dar de Alta un Dispensador de Alimento");
+        btnAltaDisAlimento.setBounds(95,20,170,30);
+        btnAltaDisAlimento.addActionListener(this);
+        VentanaAdmObjetos.add(btnAltaDisAlimento);
+        
+        btnBajaDisAlimento=new JButton("Dar de Baja un Dispensador de Alimento");
+        btnBajaDisAlimento.setBounds(285,20,170,30);
+        btnBajaDisAlimento.addActionListener(this);
+        VentanaAdmObjetos.add(btnBajaDisAlimento);
+        
+        btnCambioDisAlimento=new JButton("Modificar un Dispensador de Alimento");
+        btnCambioDisAlimento.setBounds(95,70,170,30);
+        btnCambioDisAlimento.addActionListener(this);
+        VentanaAdmObjetos.add(btnCambioDisAlimento);
+        
+        btnConsultaDisAlimento=new JButton("Consultar un Dispensador de Alimento");
+        btnConsultaDisAlimento.setBounds(285,70,170,30);
+        btnConsultaDisAlimento.addActionListener(this);
+        VentanaAdmObjetos.add(btnConsultaDisAlimento);
+    }
+    
+    private void crearbotonesAdminIrrigadores(){
+        btnAltaIrrigador=new JButton("Dar de Alta un Irrigador");
+        btnAltaIrrigador.setBounds(95,20,170,30);
+        btnAltaIrrigador.addActionListener(this);
+        VentanaAdmObjetos.add(btnAltaIrrigador);
+        
+        btnBajaIrrigador=new JButton("Dar de Baja un Irrigador");
+        btnBajaIrrigador.setBounds(285,20,170,30);
+        btnBajaIrrigador.addActionListener(this);
+        VentanaAdmObjetos.add(btnBajaIrrigador);
+        
+        btnCambioIrrigador=new JButton("Modificar un Irrigador");
+        btnCambioIrrigador.setBounds(95,70,170,30);
+        btnCambioIrrigador.addActionListener(this);
+        VentanaAdmObjetos.add(btnCambioIrrigador);
+        
+        btnConsultaIrrigador=new JButton("Consultar un Irrigador");
+        btnConsultaIrrigador.setBounds(285,70,170,30);
+        btnConsultaIrrigador.addActionListener(this);
+        VentanaAdmObjetos.add(btnConsultaIrrigador);
+    }
+    
+    private void crearbotonesAdminAlarmas(){
+        btnAltaAlarma=new JButton("Dar de Alta una Alarma");
+        btnAltaAlarma.setBounds(95,20,170,30);
+        btnAltaAlarma.addActionListener(this);
+        VentanaAdmObjetos.add(btnAltaAlarma);
+        
+        btnBajaAlarma=new JButton("Dar de Baja una Alarma");
+        btnBajaAlarma.setBounds(285,20,170,30);
+        btnBajaAlarma.addActionListener(this);
+        VentanaAdmObjetos.add(btnBajaAlarma);
+        
+        btnCambioAlarma=new JButton("Modificar una Alarma");
+        btnCambioAlarma.setBounds(95,70,170,30);
+        btnCambioAlarma.addActionListener(this);
+        VentanaAdmObjetos.add(btnCambioAlarma);
+        
+        btnConsultaAlarma=new JButton("Consultar una Alarma");
+        btnConsultaAlarma.setBounds(285,70,170,30);
+        btnConsultaAlarma.addActionListener(this);
+        VentanaAdmObjetos.add(btnConsultaAlarma);
+    }
+    
+    private void crearbotonesAdminLuminarias(){
+        btnAltaLuminaria=new JButton("Dar de Alta una Luminaria");
+        btnAltaLuminaria.setBounds(95,20,170,30);
+        btnAltaLuminaria.addActionListener(this);
+        VentanaAdmObjetos.add(btnAltaLuminaria);
+        
+        btnBajaLuminaria=new JButton("Dar de Baja una Luminaria");
+        btnBajaLuminaria.setBounds(285,20,170,30);
+        btnBajaLuminaria.addActionListener(this);
+        VentanaAdmObjetos.add(btnBajaLuminaria);
+        
+        btnCambioLuminaria=new JButton("Modificar una Luminaria");
+        btnCambioLuminaria.setBounds(95,70,170,30);
+        btnCambioLuminaria.addActionListener(this);
+        VentanaAdmObjetos.add(btnCambioLuminaria);
+        
+        btnConsultaLuminaria=new JButton("Consultar una Luminaria");
+        btnConsultaLuminaria.setBounds(285,70,170,30);
+        btnConsultaLuminaria.addActionListener(this);
+        VentanaAdmObjetos.add(btnConsultaLuminaria);
+    }
+    
+    private void crearbotonesAdminLamparas(){
+        btnAltaLampara=new JButton("Dar de Alta una Lampara");
+        btnAltaLampara.setBounds(95,20,170,30);
+        btnAltaLampara.addActionListener(this);
+        VentanaAdmObjetos.add(btnAltaLampara);
+        
+        btnBajaLampara=new JButton("Dar de Baja una Lampara");
+        btnBajaLampara.setBounds(285,20,170,30);
+        btnBajaLampara.addActionListener(this);
+        VentanaAdmObjetos.add(btnBajaLampara);
+        
+        btnCambioLampara=new JButton("Modificar una Lampara");
+        btnCambioLampara.setBounds(95,70,170,30);
+        btnCambioLampara.addActionListener(this);
+        VentanaAdmObjetos.add(btnCambioLampara);
+        
+        btnConsultaLampara=new JButton("Consultar una Lampara");
+        btnConsultaLampara.setBounds(285,70,170,30);
+        btnConsultaLampara.addActionListener(this);
+        VentanaAdmObjetos.add(btnConsultaLampara);
     }
 }

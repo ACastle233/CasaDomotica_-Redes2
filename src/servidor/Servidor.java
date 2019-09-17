@@ -24,14 +24,14 @@ public class Servidor {
         
         System.out.println("\nRecuperando objetos");
         ///crear listas de objetos
-        ArrayList <Refrigerador> ListaR=new ArrayList <Refrigerador>();
-        ArrayList <Cortinas> ListaC=new ArrayList <Cortinas>();
-        ArrayList <Termostato> ListaT=new ArrayList <Termostato>();
-        ArrayList <DisMascota> ListaM=new ArrayList <DisMascota>();
-        ArrayList <Irrigador> ListaI=new ArrayList <Irrigador>();
-        ArrayList <Alarma> ListaA=new ArrayList <Alarma>();
-        ArrayList <Lampara> ListaL=new ArrayList <Lampara>();
-        ArrayList <Luminaria> ListaLu=new ArrayList <Luminaria>();
+        ArrayList <Refrigerador> listRefri = new ArrayList <Refrigerador>();
+        ArrayList <Cortinas> listCortinas = new ArrayList <Cortinas>();
+        ArrayList <Termostato> listTermostato = new ArrayList <Termostato>();
+        ArrayList <DisMascota> listDisMascota = new ArrayList <DisMascota>();
+        ArrayList <Irrigador> listIrrigador = new ArrayList <Irrigador>();
+        ArrayList <Alarma> listAlarma = new ArrayList <Alarma>();
+        ArrayList <Lampara> listLampara = new ArrayList <Lampara>();
+        ArrayList <Luminaria> listLuminaria = new ArrayList <Luminaria>();
         //abrir el archivo donde estan los objetos
         in = new ObjectInputStream(new FileInputStream("Objetos.txt"));
         int TipoO;
@@ -48,7 +48,7 @@ public class Servidor {
                     for(int i=0;i<Cant;i++)
                     {
                         Refrigerador R=(Refrigerador)in.readObject();
-                        ListaR.add(R);
+                        listRefri.add(R);
                     }
                     break;
                 }
@@ -59,7 +59,7 @@ public class Servidor {
                     for(int i=0;i<Cant;i++)
                     {
                         Cortinas C=(Cortinas)in.readObject();
-                        ListaC.add(C);
+                        listCortinas.add(C);
                     }
                     break;
                 }
@@ -70,7 +70,7 @@ public class Servidor {
                     for(int i=0;i<Cant;i++)
                     {
                         Termostato T=(Termostato)in.readObject();
-                        ListaT.add(T);
+                        listTermostato.add(T);
                     }
                     break;
                 }
@@ -81,7 +81,7 @@ public class Servidor {
                     for(int i=0;i<Cant;i++)
                     {
                         DisMascota M=(DisMascota)in.readObject();
-                        ListaM.add(M);
+                        listDisMascota.add(M);
                     }
                     break;
                 }
@@ -92,7 +92,7 @@ public class Servidor {
                     for(int i=0;i<Cant;i++)
                     {
                         Irrigador I=(Irrigador)in.readObject();
-                        ListaI.add(I);
+                        listIrrigador.add(I);
                     }
                     break;
                 }
@@ -103,7 +103,7 @@ public class Servidor {
                     for(int i=0;i<Cant;i++)
                     {
                         Alarma A=(Alarma)in.readObject();
-                        ListaA.add(A);
+                        listAlarma.add(A);
                     }
                     break;
                 }
@@ -114,7 +114,7 @@ public class Servidor {
                     for(int i=0;i<Cant;i++)
                     {
                         Lampara L=(Lampara)in.readObject();
-                        ListaL.add(L);
+                        listLampara.add(L);
                     }
                     break;
                 }
@@ -125,7 +125,7 @@ public class Servidor {
                     for(int i=0;i<Cant;i++)
                     {
                         Luminaria Lu=(Luminaria)in.readObject();
-                        ListaLu.add(Lu);
+                        listLuminaria.add(Lu);
                     }
                     break;
                 }
@@ -191,21 +191,21 @@ public class Servidor {
                     out.writeObject(lp);
                     out.flush();
                     //enviar listas de objetos
-                    out.writeObject(ListaR);
+                    out.writeObject(listRefri);
                     out.flush();
-                    out.writeObject(ListaC);
+                    out.writeObject(listCortinas);
                     out.flush();
-                    out.writeObject(ListaT);
+                    out.writeObject(listTermostato);
                     out.flush();
-                    out.writeObject(ListaM);
+                    out.writeObject(listDisMascota);
                     out.flush();
-                    out.writeObject(ListaI);
+                    out.writeObject(listIrrigador);
                     out.flush();
-                    out.writeObject(ListaA);
+                    out.writeObject(listAlarma);
                     out.flush();
-                    out.writeObject(ListaL);
+                    out.writeObject(listLampara);
                     out.flush();
-                    out.writeObject(ListaLu);
+                    out.writeObject(listLuminaria);
                     out.flush();
                     
                     //Recibir respuesta
@@ -221,7 +221,7 @@ public class Servidor {
                             {
                                 case 0: //Clase Usuario
                                 {
-                                    Usuario newUsuario=(Usuario)in.readObject();
+                                    Usuario newUsuario = (Usuario)in.readObject();
                                     lp.AddUsuario(newUsuario);
                                     for(int i=0;i<lp.getTamLista();i++)
                                     {
@@ -232,35 +232,50 @@ public class Servidor {
                                 }
                                 case 1:
                                 {
-                                    
+                                    Refrigerador newRefri = (Refrigerador)in.readObject();
+                                    listRefri.add(newRefri);
                                     break;
                                 }
                                 case 2:
                                 {
+                                    Cortinas newCortina = (Cortinas)in.readObject();
+                                    listCortinas.add(newCortina);
                                     break;
                                 }
                                 case 3:
                                 {
+                                    Termostato newTermostato = (Termostato)in.readObject();
+                                    listTermostato.add(newTermostato);
                                     break;
                                 }
                                 case 4:
                                 {
+                                    DisMascota newDisMascota = (DisMascota)in.readObject();
+                                    listDisMascota.add(newDisMascota);
                                     break;
                                 }
                                 case 5:
                                 {
+                                    Irrigador newIrrigador = (Irrigador)in.readObject();
+                                    listIrrigador.add(newIrrigador);
                                     break;
                                 }
                                 case 6:
                                 {
+                                    Alarma newAlarma = (Alarma)in.readObject();
+                                    listAlarma.add(newAlarma);
                                     break;
                                 }
                                 case 7:
                                 {
+                                    Lampara newLampara = (Lampara)in.readObject();
+                                    listLampara.add(newLampara);
                                     break;
                                 }
                                 case 8:
                                 {
+                                    Luminaria newLuminaria = (Luminaria)in.readObject();
+                                    listLuminaria.add(newLuminaria);
                                     break;
                                 }
                             }
@@ -423,21 +438,21 @@ public class Servidor {
                 else
                 {
                     //enviar listas de objetos
-                    out.writeObject(ListaR);
+                    out.writeObject(listRefri);
                     out.flush();
-                    out.writeObject(ListaC);
+                    out.writeObject(listCortinas);
                     out.flush();
-                    out.writeObject(ListaT);
+                    out.writeObject(listTermostato);
                     out.flush();
-                    out.writeObject(ListaM);
+                    out.writeObject(listDisMascota);
                     out.flush();
-                    out.writeObject(ListaI);
+                    out.writeObject(listIrrigador);
                     out.flush();
-                    out.writeObject(ListaA);
+                    out.writeObject(listAlarma);
                     out.flush();
-                    out.writeObject(ListaL);
+                    out.writeObject(listLampara);
                     out.flush();
-                    out.writeObject(ListaLu);
+                    out.writeObject(listLuminaria);
                     out.flush();
                     //Recibir respuesta
                     int Respuesta=in.readInt();
