@@ -75,6 +75,7 @@ public class Cliente extends JFrame implements ActionListener{
          */
         
         JButton btnAltaRefri;
+        JButton newRefri;
         JButton btnBajaRefri;
         JButton btnCambioRefri;
         JButton btnConsultaRefri;
@@ -141,6 +142,9 @@ public class Cliente extends JFrame implements ActionListener{
             ArrayList <Alarma> listAlarma;
             ArrayList <Lampara> listLampara;
             ArrayList <Luminaria> listLuminaria;
+    private JTextField tempCharola;
+    private JTextField tempFrigo;
+    private JTextField tempCentro;
     public Cliente()
     {
     }
@@ -406,6 +410,15 @@ public class Cliente extends JFrame implements ActionListener{
         labelsVentanasAdminObj("No. Luminaria", "Luminaria", listLuminaria);
     }
     
+    public void altaRefri()
+    {
+        newRefri=new JButton("Dar de Alta Refrigerador");
+        newRefri.setBounds(50,190,120,30);
+        newRefri.addActionListener(this);
+        VentanaAltaU.add(newRefri);
+        setLabelsAndTextFieldsRefris();
+    }
+    
     public void AltaU()
     {
         AceptarU=new JButton("Dar de Alta");
@@ -483,6 +496,9 @@ public class Cliente extends JFrame implements ActionListener{
             VentanaA=new JFrame();
             nuevaVenatanaAdminObjetos();
         }
+        /**
+         * Administradores de Objetos
+         */
         if(e.getSource()==btnRefrigerador)
         {
             VentanaAdmU.dispose();
@@ -523,16 +539,7 @@ public class Cliente extends JFrame implements ActionListener{
             VentanaAdmObjetos=new JFrame();
             VentanaAdminIluminaria();
         }
-        /**
-         * JButton btnRefrigerador;
-        JButton btnAlarma;
-        JButton btnCortinas;
-        JButton btnDismascota;
-        JButton btnIrrigador;
-        JButton btnLampara;
-        JButton btnLuminaria;
-        JButton btnTermostato;
-         */
+        
         if(e.getSource()==btnTermostato)
         {
             VentanaAdmU.dispose();
@@ -573,8 +580,65 @@ public class Cliente extends JFrame implements ActionListener{
             VentanaAdmObjetos=new JFrame();
             VentanaAdminAlarma();
         }
-        if(e.getSource()==RegresarAObj)
+         /**
+         * Administradores de Objetos FIN
+         */
+         /**
+          * CRUD Refrigeradores 
+          * JButton btnAltaRefri;
+        JButton btnBajaRefri;
+        JButton btnCambioRefri;
+        JButton btnConsultaRefri;
+          */
+         if(e.getSource() == btnAltaRefri)
         {
+            VentanaAdmObjetos.dispose();
+            VentanaAdmObjetos.removeAll();
+            VentanaAdmObjetos=new JFrame();
+            altaRefri();
+        }
+         if(e.getSource()==newRefri)
+        {
+            float temFrigo = Float.parseFloat(tempFrigo.getText());
+            float temCentro = Float.parseFloat(tempCentro.getText());
+            float temCharola = Float.parseFloat(tempCharola.getText());
+            boolean check = true;
+            int newId=(listRefri.get(listRefri.size()-1).getId()+1);
+            
+            if((int)temFrigo<-5 && (int)temFrigo>3){
+                JOptionPane.showMessageDialog(null,"Rango válido -5 y 3 grados");
+                check=false;
+            }else if((int)temCentro < 0 && (int)temCentro > 10){
+                JOptionPane.showMessageDialog(null,"Rango válido 0 y 10 grados");
+                check=false;
+            }else if((int)temCharola < 5 && (int)temCharola > 10){
+                JOptionPane.showMessageDialog(null,"Valor mínimo 5 y máximo de temCentro");
+                check=false;
+            }
+            if(check){
+                Refrigerador newRefrigerador = new Refrigerador(newId,temFrigo,temCentro,temCharola);
+                try {
+                    out.writeInt(1);
+                    out.flush();
+                    out.writeInt(1);
+                    out.flush();
+                    out.writeObject(newRefrigerador);
+                    out.flush();
+                    listRefri.add(newRefrigerador);
+                } catch (IOException ex) {
+                    Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                JOptionPane.showMessageDialog(null,"Refrigerador Creado creado");
+                VentanaAltaU.dispose();
+                VentanaAltaU.removeAll();
+                VentanaAltaU = new JFrame();
+                VentanaAdminRefri();
+            }    
+        }
+         /**
+          * CRUD Refrigeradores 
+          */
+        if(e.getSource()==RegresarAObj) {
             VentanaAdmObjetos.dispose();
             VentanaAdmObjetos.removeAll();
             VentanaAdmObjetos=new JFrame();
@@ -583,8 +647,7 @@ public class Cliente extends JFrame implements ActionListener{
             VentanaAdmU=new JFrame();
             nuevaVenatanaAdminObjetos();
         }
-        if(e.getSource()==SalirA)
-        {
+        if(e.getSource()==SalirA) {
             VentanaA.dispose();
             VentanaA.removeAll();
             VentanaA=new JFrame();
@@ -598,8 +661,7 @@ public class Cliente extends JFrame implements ActionListener{
             }
         }
         //////////Ventana Administrador (Usuarios) //////
-        if(e.getSource()==SalirAU)
-        {
+        if(e.getSource()==SalirAU) {
             VentanaAdmU.dispose();
             VentanaAdmU.removeAll();
             VentanaAdmU=new JFrame();
@@ -613,22 +675,19 @@ public class Cliente extends JFrame implements ActionListener{
                 Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        if(e.getSource()==RegresarAU)
-        {
+        if(e.getSource()==RegresarAU) {
             VentanaAdmU.dispose();
             VentanaAdmU.removeAll();
             VentanaAdmU=new JFrame();
             VentanaAdmi();
         }
-        if(e.getSource()==AltaU)
-        {
+        if(e.getSource()==AltaU) {
             VentanaAdmU.dispose();
             VentanaAdmU.removeAll();
             VentanaAdmU=new JFrame();
             AltaU();
         }
-        if(e.getSource()==BajaUsuario)
-        {
+        if(e.getSource()==BajaUsuario) {
             String Cnum = JOptionPane.showInputDialog(null,"Ingrese numero de Usuario:");
             int num = Integer.parseInt(Cnum);
             num = num-1;
@@ -859,6 +918,37 @@ public class Cliente extends JFrame implements ActionListener{
         btnConsultaU.addActionListener(this);
         VentanaAdmU.add(btnConsultaU);
     }
+    
+    private void setLabelsAndTextFieldsRefris(){
+        text=new JLabel("Temperatura Frigo:");
+        text.setBounds(20,20,150,30);
+        VentanaAltaU.add(text);
+        tempFrigo = new JTextField();
+        tempFrigo.setBounds(180,20,150,30);
+        VentanaAltaU.add(tempFrigo);
+        
+        text=new JLabel("Temperatura Centro:");
+        text.setBounds(20,60,150,30);
+        VentanaAltaU.add(text);
+        tempCentro = new JTextField();
+        tempCentro.setBounds(180,60,150,30);
+        VentanaAltaU.add(tempCentro);
+        
+        text=new JLabel("Temperatura Charola:");
+        text.setBounds(20,100,150,30);
+        VentanaAltaU.add(text);
+        tempCharola = new JTextField();
+        tempCharola.setBounds(180,100,150,30);
+        VentanaAltaU.add(tempCharola);
+        
+        RegresarAObj=new JButton("Regresar");
+        RegresarAObj.setBounds(185,190,120,30);
+        RegresarAObj.addActionListener(this);
+        VentanaAltaU.add(RegresarAObj);
+        
+        caracteristicasVentanaRegistro("Dar de alta Refrigerador", VentanaAltaU);
+    }
+    
     private void setLabelsAndTextFieldsUser(){
         text=new JLabel("Nombre Completo:");
         text.setBounds(20,20,150,30);
@@ -893,16 +983,9 @@ public class Cliente extends JFrame implements ActionListener{
         RegresarU.setBounds(185,190,120,30);
         RegresarU.addActionListener(this);
         VentanaAltaU.add(RegresarU);
-        
-        //Caracteristicas de la ventana
-        VentanaAltaU.setLayout(null);
-        VentanaAltaU.setTitle("Dar de Alta");//Nombre de la ventana
-        VentanaAltaU.setSize(355,270);//Dimensiones de la ventana. Ancho y alto
-        VentanaAltaU.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//Permite que la ventana se pueda cerrar cuando le presionemos en la X
-        VentanaAltaU.setResizable(false);//Para que la ventana no se pueda reedimensionar
-        VentanaAltaU.setLocationRelativeTo(null);//permitir que la venana se despliegue en el centro de la pantalla
-        VentanaAltaU.setVisible(true);//Hacer visible la ventana*
+        caracteristicasVentanaRegistro("Dar de alta", VentanaAltaU);
     }
+    
     private void creaBotonesObje(){
         /**
          * Izquierda
@@ -954,6 +1037,18 @@ public class Cliente extends JFrame implements ActionListener{
         btnLuminaria.addActionListener(this);    
         btnTermostato.addActionListener(this);      
     }
+    
+    private void caracteristicasVentanaRegistro(String titulo, JFrame ventana){
+        //Caracteristicas de la ventana
+        ventana.setLayout(null);
+        ventana.setTitle(titulo);//Nombre de la ventana
+        ventana.setSize(355,270);//Dimensiones de la ventana. Ancho y alto
+        ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//Permite que la ventana se pueda cerrar cuando le presionemos en la X
+        ventana.setResizable(false);//Para que la ventana no se pueda reedimensionar
+        ventana.setLocationRelativeTo(null);//permitir que la venana se despliegue en el centro de la pantalla
+        ventana.setVisible(true);//Hacer visible la ventana*
+    }
+    
     private void caracteristicasVentana(String titulo, JFrame ventana){
         //Caracteristicas de la ventana
         ventana.setLayout(null);
